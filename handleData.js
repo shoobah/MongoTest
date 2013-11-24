@@ -12,12 +12,15 @@ exports.savePageData = function (dataToSave, collectionName) {
 
         var collection = db.collection(collectionName);
 
-        collection.insert(dataToSave, {w: 1, safe: true}, function (err, result) {
+        var insertFunc = function (err, result) {
             if (err) {
                 throw err;
             }
-            console.log("inserted %d items to collection %s ", dataToSave.length, collectionName);
-        });
+        };
+
+        for (var i = 0; i < dataToSave.length; i++) {
+            collection.insert(dataToSave[i], {w: 1, safe: true}, insertFunc);
+        }
     });
 };
 
